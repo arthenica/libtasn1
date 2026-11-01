@@ -236,7 +236,7 @@ B-PureOS10:
   extends: .pureosdebian
 
 B-Debian11:
-  image: debian:11-slim
+  image: debian/eol:bullseye
   extends: .pureosdebian
 
 B-Devuan5:
@@ -595,6 +595,7 @@ S-Trisquel10:
   needs: [B-Trisquel11]
   before_script:
   - cat /etc/os-release
+  - sed -i 's,archive.trisquel.info/trisquel,ftp.acc.umu.se/mirror/trisquel/packages,' /etc/apt/sources.list
   - time apt-get update -q
   - time apt-get install -y -q eatmydata
   - time eatmydata apt-get install -y -q --no-install-recommends wget make git ca-certificates patch autoconf automake libtool bison texinfo help2man gtk-doc-tools
@@ -809,7 +810,7 @@ Coverity:
       - cov-int/*.txt
 
 armcross:
-  image: debian:11-slim
+  image: debian/eol:bullseye
   stage: test
   needs: [B-Trisquel11]
   before_script:
@@ -830,7 +831,7 @@ armcross:
   - time make check
 
 Mingw32:
-  image: debian:11-slim
+  image: debian:stable-slim
   stage: test
   needs: [B-Trisquel11]
   before_script:
@@ -845,7 +846,7 @@ Mingw32:
   - time make check V=1
 
 Mingw64:
-  image: debian:11-slim
+  image: debian:stable-slim
   stage: test
   needs: [B-Trisquel11]
   before_script:
@@ -985,7 +986,7 @@ Debian9-distcheck:
   - !reference [.save-artifacts, script]
 
 Debian11-distcheck:
-  image: debian:11-slim
+  image: debian/eol:bullseye-slim
   stage: test
   needs: [B-Trisquel11]
   before_script:
@@ -1027,7 +1028,7 @@ Ubuntu-rolling-distcheck:
   - !reference [.save-artifacts, script]
 
 tcc-lld:
-  image: debian:11-slim
+  image: debian:stable-slim
   stage: test
   needs: [B-Trisquel11]
   before_script:
@@ -1040,7 +1041,7 @@ tcc-lld:
   - time make check V=1 VERBOSE=t
 
 pcc:
-  image: debian:11-slim
+  image: debian:stable-slim
   stage: test
   needs: [B-Trisquel11]
   before_script:
